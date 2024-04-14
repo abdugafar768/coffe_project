@@ -5,28 +5,40 @@ from rest_framework.response import Response
 from rest_framework import status
 
 
+
 class UserCreateView(generics.CreateAPIView):
     serializer_class = UserSerializer
+
 
 class CategoryListView(generics.ListAPIView):
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
 
+
+
+class ProductListView(generics.ListAPIView):
+    serializer_class = DrinkProductSerializer
+
+    def get_queryset(self):
+        category_pk = self.kwargs['category_pk']
+        return Product.objects.filter(category_id=category_pk)
+
+
 class FoodProductListView(generics.ListAPIView):
     queryset = Product.objects.all()
-    serializer_class = FoodProductSerializer
+    serializer_class = FoodProductDetailSerializer
 
-class DrinkProductListView(generics.ListAPIView):
-    queryset = Product.objects.all()
-    serializer_class = DrinkProductSerializer
 
 class FoodProductDetailView(generics.RetrieveAPIView):
     queryset = Product.objects.all()
     serializer_class = FoodProductDetailSerializer
 
+
 class BasketListView(generics.ListAPIView):
     queryset = Basket.objects.all()
     serializer_class = BasketSerializer
+
+
 
 class OrderListView(generics.ListAPIView):
     queryset = Order.objects.all()
