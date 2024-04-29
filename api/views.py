@@ -3,7 +3,9 @@ from .models import *
 from rest_framework import permissions , generics
 from rest_framework.response import Response
 from rest_framework import status
-
+from .filters import ProductFilter
+from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework import filters
 
 
 class UserCreateView(generics.CreateAPIView):
@@ -15,14 +17,28 @@ class CategoryListView(generics.ListAPIView):
     serializer_class = CategorySerializer
 
 
-
 class ProductListView(generics.ListAPIView):
+    queryset = Product.objects.all()
     serializer_class = DrinkProductSerializer
 
     def get_queryset(self):
         category_pk = self.kwargs['category_pk']
         return Product.objects.filter(category_id=category_pk)
+    
+    # def get_queryset(self):
+    #     queryset = super().get_queryset()
+    #     filtered_data = PatientFilter(self.request.GET, queryset=queryset)
+    #     return filtered_data.qs
 
+class ProductListView(generics.ListAPIView):
+    queryset = Product.objects.all()
+    serializer_class = DrinkProductSerializer
+    filter_backends = (DjangoFilterBackend, filters.SearchFilter, )
+    filterset_class = ProductFilter
+
+class ProductDetailView(generics.RetrieveAPIView):
+    queryset = Product.objects.all()
+    serializer_class = DrinkProductSerializer
 
 class FoodProductListView(generics.ListAPIView):
     queryset = Product.objects.all()
@@ -34,7 +50,7 @@ class FoodProductDetailView(generics.RetrieveAPIView):
     serializer_class = FoodProductDetailSerializer
 
 
-class BasketListView(generics.ListAPIView):
+class BasketListView(generics.ListCreateAPIView):
     queryset = Basket.objects.all()
     serializer_class = BasketSerializer
 
@@ -55,6 +71,6 @@ class OrderListView(generics.ListAPIView):
         return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
     
 
-class OrderListView(generics.ListAPIView):
+class OrderListView(generics.CreateAPIView):
     queryset = Order.objects.all()
     serializer_class = OrderSerializer

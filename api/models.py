@@ -35,13 +35,15 @@ class Basket(models.Model):
 
     def total_price(self):
         return self.product.price * self.quantity
+    
+    def __str__(self) :
+        return self.product.title
 
 
 class Order(models.Model):
     user = models.ForeignKey(CustomerUser, on_delete=models.CASCADE)
-    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    product = models.ForeignKey(Basket, on_delete=models.CASCADE)
     quantity = models.PositiveIntegerField(default=1)
-    address = models.TextField()
 
     def total_price(self):
         return self.product.price * self.quantity
