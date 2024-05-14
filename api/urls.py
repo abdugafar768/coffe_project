@@ -8,9 +8,9 @@ urlpatterns = [
     path('products/<int:pk>/',ProductDetailView.as_view()),
 
     path('baskets/', BasketListView.as_view()),
-    
-    path('orders/', OrderListView.as_view()),
 
-    path('products/food/', FoodProductListView.as_view()),
-    path('products/food/<int:pk>/', FoodProductDetailView.as_view()),
 ]
+    
+    # path('orders/', OrderListView.as_view()),
+    # path('products/food/', FoodProductListView.as_view()),
+    # path('products/food/<int:pk>/', FoodProductDetailView.as_view()),

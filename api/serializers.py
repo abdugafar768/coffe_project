@@ -22,32 +22,12 @@ SWEETENER_CHOICES = (
 )
 
 
-class UserSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = CustomerUser
-        fields = ['username', 'phone', 'password']
-        extra_kwargs = {'password': {'write_only': True}}
-
-    def create(self, validated_data):
-        user = CustomerUser(
-            username=validated_data['username'],
-            email=validated_data['phone']
-        )
-        user.set_password(validated_data['password'])
-        user.save()
-        return user
-    
 
 class CategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = Category
         fields = '__all__'
 
-
-class FoodProductSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Product
-        fields = '__all__'
 
 
 class DrinkProductSerializer(serializers.ModelSerializer):
@@ -84,3 +64,10 @@ class FoodProductDetailSerializer(serializers.ModelSerializer):
     class Meta:
         model = Product
         fields = '__all__'
+
+
+        
+# class FoodProductSerializer(serializers.ModelSerializer):
+#     class Meta:
+#         model = Product
+#         fields = '__all__'
